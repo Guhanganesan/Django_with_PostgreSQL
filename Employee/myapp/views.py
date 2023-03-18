@@ -40,3 +40,18 @@ def edit_emp(request,pk):
 
     return render(request,'edit.html',context)
 
+# Delete Employee
+
+def remove_emp(request, pk):
+    employees = Employee.objects.get(id=pk)
+
+    if request.method == 'POST':
+        employees.delete()
+        return redirect('/show')
+
+    context = {
+        'employees': employees,
+    }
+
+    return render(request, 'delete.html', context)
+
