@@ -7,3 +7,13 @@
 6. Create urls.py and views.py in myapp
 7. Create a models for Employee
 8. Register models in admin.py
+
+
+# Migrations
+
+1. python manage.py makemigrations
+2. python manage.py migrate
+
+# Run App
+
+1. python manage.py runserver
