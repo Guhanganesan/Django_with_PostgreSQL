@@ -5,3 +5,5 @@
 4. Add Templates directory in the settings.py file
 5. Create a PostgreSQL database called Employee and set it up in the Django project’s settings.py file
 6. Create urls.py and views.py in myapp
+7. Create a models for Employee
+8. Register models in admin.py
