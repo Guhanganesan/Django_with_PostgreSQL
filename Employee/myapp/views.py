@@ -26,4 +26,17 @@ def show_emp(request):
     employees = Employee.objects.all()
     return render(request,'show.html',{'employees':employees} )
 
-    
+
+# Update Employee
+
+def edit_emp(request,pk):
+    employees = Employee.objects.get(id=pk)
+    if request.method == 'POST':
+        return redirect('/show')
+
+    context = {
+        'employees': employees,
+    }
+
+    return render(request,'edit.html',context)
+
