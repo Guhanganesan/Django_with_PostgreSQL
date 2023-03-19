@@ -32,6 +32,12 @@ def show_emp(request):
 def edit_emp(request,pk):
     employees = Employee.objects.get(id=pk)
     if request.method == 'POST':
+        employees.EmpId = request.POST['EmpId']
+        employees.EmpName = request.POST['EmpName']
+        employees.EmpGender = request.POST['EmpGender']
+        employees.EmpEmail = request.POST['EmpEmail']
+        employees.EmpDesignation = request.POST['EmpDesignation']
+        employees.save()
         return redirect('/show')
 
     context = {

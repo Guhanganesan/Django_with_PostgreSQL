@@ -17,3 +17,13 @@
 # Run App
 
 1. python manage.py runserver
+
+# Install PostgreSQL
+1. pip install psycopg2 - OR
+2. pip install psycopg2-binary -OR
+3. python -m pip install Psycopg2
+
+# References
+1. Link: https://stackoverflow.com/questions/33215558/unable-to-install-psycopg2-on-windows
+2. https://pythonguides.com/django-crud-example-with-postgresql/ 
+
