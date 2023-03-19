@@ -30,6 +30,12 @@
 1. Link: https://stackoverflow.com/questions/33215558/unable-to-install-psycopg2-on-windows
 2. https://pythonguides.com/django-crud-example-with-postgresql/ 
 
+# GET Data (Model - Member)
+
+1. Member.objects.all().values()
+2. Member.objects.values_list('firstname')  => Specific columns
+3. Member.objects.filter(firstname='Emil').values() => Specific Rows
+
 # Field Lookups
 
 1. mydata = Member.objects.filter(lastname__icontains='ref').values() => WHERE lastname LIKE '%ref%'; 
@@ -45,3 +51,9 @@
 
 1. Add 10 dollars to all prices => {{ x|add:"10" }} dollars => if x=10; result 20 dollars
 2. {{ fruits|slice:"1:4" }} => Get items 1, 2, and 3 from a list
+
+# Order By
+
+1. (ASC) mydata = Member.objects.all().order_by('firstname').values()  => SELECT * FROM members ORDER BY firstname;
+2. (DESC) mydata = Member.objects.all().order_by('-firstname').values() => SELECT * FROM members ORDER BY firstname DESC;
+3. mydata = Member.objects.all().order_by('lastname', '-id').values() => SELECT * FROM members ORDER BY lastname ASC, id DESC;
