@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-# from .forms import EmployeeForm
+from django.http import HttpResponse
 from .models import Employee
+from myapp.forms import StudentForm
 
 # Create your views here.
 
@@ -61,3 +62,22 @@ def remove_emp(request, pk):
 
     return render(request, 'delete.html', context)
 
+
+
+def upload_files(request):  
+    if request.method == 'POST':  
+        student = StudentForm(request.POST, request.FILES)  
+        if student.is_valid():  
+            handle_uploaded_file(request.FILES['file'])  
+            return HttpResponse("File uploaded successfuly")  
+    else:  
+        student = StudentForm()  
+        return render(request,"upload_file.html",{'form':student})
+
+
+def handle_uploaded_file(f):  
+    with open('myapp/static/upload/'+f.name, 'wb+') as destination:  
+        for chunk in f.chunks():  
+            destination.write(chunk)
+
+  
