@@ -19,6 +19,11 @@
 
 1. python manage.py runserver
 
+# Git Ignore 
+
+1. touch .gitignore
+2. git config --global core.excludesfile ~/.gitignore_global
+
 # Install PostgreSQL
 
 1. pip install psycopg2 - OR
@@ -28,13 +33,32 @@
 # References
 
 1. Link: https://stackoverflow.com/questions/33215558/unable-to-install-psycopg2-on-windows
-2. https://pythonguides.com/django-crud-example-with-postgresql/ 
+2. https://pythonguides.com/django-crud-example-with-postgresql/
+
+# Basic Queries
+
+1. Member.objects.all()
+2. Member.objects.all().count()
+3. Member.objects.all().delete()
+4. Member(EmpId=EmpId, EmpName=EmpName, EmpGender=EmpGender, EmpEmail=EmpEmail) => create
+5. employees = Employee.objects.get(id=pk) =>  employees.EmpId = "some_value" => Update
+6. Employee.objects.get(id=pk).delete() => For Single
+7. 
 
 # GET Data (Model - Member)
 
 1. Member.objects.all().values()
 2. Member.objects.values_list('firstname')  => Specific columns
 3. Member.objects.filter(firstname='Emil').values() => Specific Rows
+4. Member.objects.exclude(first_name__startswith = 'R')   => Objects that do not match the given lookup.
+5. Member.objects.filter(first_name__startswith = 'R') | Member.objects.filter(last_name__startswith = 'S') 
+6. Member.objects.filter(first_name__startswith = 'P') & Member.objects.filter(last_name__startswith = 'S') 
+7. Member.objects.filter( first_name__startswith='A', last_name__startswith='S' )
+8. Member.objects.all().count()
+9. Member.objects.bulk_create([Member(first_name = 'Jai', last_name = 'Shah', mobile = '88888', email = 'shah@reddif.com'),Member(first_name = 'Tarak', last_name = 'Mehta', mobile = '9999', email = 'tarak@reddif.com'), Member(first_name = 'SuryaKumar', last_name = 'Yadav', mobile = '00000', email = 'yadav@reddif.com')])
+10. Member.objects.all()[:4]      => Slicing
+11. Member.objects.all()[:10:2]    => Negative indexing is not supported. However, using this.
+12. Member.objects.filter(last_name__contains = 'Shar')
 
 # Field Lookups
 
@@ -57,3 +81,5 @@
 1. (ASC) mydata = Member.objects.all().order_by('firstname').values()  => SELECT * FROM members ORDER BY firstname;
 2. (DESC) mydata = Member.objects.all().order_by('-firstname').values() => SELECT * FROM members ORDER BY firstname DESC;
 3. mydata = Member.objects.all().order_by('lastname', '-id').values() => SELECT * FROM members ORDER BY lastname ASC, id DESC;
+4. Member.objects.all().order_by('first_name','-mobile') => multiple
+5.    
