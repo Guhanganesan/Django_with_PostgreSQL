@@ -8,4 +8,5 @@ urlpatterns = [
     path('remove/<int:pk>', views.remove_emp, name='remove-emp'),
     path('upload_files', views.upload_files, name='upload_files'),
     path('read_csv', views.read_csv_file, name='read_csv'),
+    path('write_csv', views.write_into_csv_file, name='write_csv')
 ]

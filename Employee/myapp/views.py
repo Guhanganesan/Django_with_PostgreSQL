@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Employee, EceStudents, CseStudents
 from myapp.forms import StudentForm
+import pandas as pd
 
 # Create your views here.
 
@@ -105,3 +106,42 @@ def read_csv_file(request):
         cs_stds.save()
 
     return render(request,"csv_data.html")
+
+def write_into_csv_file(request):
+    # We need to fetch db details as columns wise first
+    db_details =  CseStudents.objects.all().order_by('name').values()
+    print(type(db_details))
+    dict_of_csv_data = {
+        'name':None,
+        'age':None,
+        'email':None,
+        'pass_word':None
+    }
+    id_list = []
+    name_list = []
+    age_list = []
+    email_list = []
+    pass_word_list = []
+
+    for index in range(0, len(db_details)): # for number of rows
+        # Store in a list to add in dictionary to change it into csv file
+        name_list.append(db_details[index].get('name'))
+        age_list.append(db_details[index].get('age'))
+        email_list.append(db_details[index].get('email'))
+        pass_word_list.append(db_details[index].get('pass_word'))
+    
+    # Update columns details in dict
+    dict_of_csv_data['name'] = name_list
+    dict_of_csv_data['age'] = age_list
+    dict_of_csv_data['email'] = email_list
+    dict_of_csv_data['pass_word'] = pass_word_list
+    print(dict_of_csv_data)
+
+    # Convert into Dataframe object
+    df = pd.DataFrame(dict_of_csv_data)
+    print(df)
+    # saving in csv file
+    df.to_csv('myapp/static/upload/file1.csv')
+
+    return HttpResponse("Success")
+    
