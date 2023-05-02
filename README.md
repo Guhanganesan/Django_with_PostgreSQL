@@ -43,7 +43,14 @@
 4. Member(EmpId=EmpId, EmpName=EmpName, EmpGender=EmpGender, EmpEmail=EmpEmail) => create
 5. employees = Employee.objects.get(id=pk) =>  employees.EmpId = "some_value" => Update
 6. Employee.objects.get(id=pk).delete() => For Single
-7. 
+
+# AND 
+
+mydata = Member.objects.filter(lastname='Refsnes', id=2).values()
+
+# OR 
+
+mydata = Member.objects.filter(firstname='Emil').values() | Member.objects.filter(firstname='Tobias').values()
 
 # GET Data (Model - Member)
 
