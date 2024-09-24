@@ -1,0 +1,118 @@
+Certainly! Let's explore how to use Django ORM to filter data across different tables using related models. We'll stick with our previous `Author` and `Book` models but also introduce a new model: `Publisher`. Each book can have one publisher.
+
+### Updated Models
+
+```python
+from django.db import models
+
+class Author(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+class Publisher(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+class Book(models.Model):
+    title = models.CharField(max_length=100)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='books')
+    publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE, related_name='books')
+
+    def __str__(self):
+        return self.title
+```
+
+### Sample Data
+
+Let's create some sample data for authors, publishers, and books.
+
+```python
+# Create authors
+author1 = Author.objects.create(name='Author One')
+author2 = Author.objects.create(name='Author Two')
+
+# Create publishers
+publisher1 = Publisher.objects.create(name='Publisher One')
+publisher2 = Publisher.objects.create(name='Publisher Two')
+
+# Create books
+Book.objects.create(title='Book One', author=author1, publisher=publisher1)
+Book.objects.create(title='Book Two', author=author1, publisher=publisher2)
+Book.objects.create(title='Book Three', author=author2, publisher=publisher1)
+```
+
+### Filtering Examples
+
+1. **Filter Books by a Specific Publisher**
+
+To find all books published by "Publisher One":
+
+```python
+books_by_publisher = Book.objects.filter(publisher__name='Publisher One')
+for book in books_by_publisher:
+    print(book.title)
+```
+
+2. **Filter Books by Author and Publisher**
+
+If you want to find books by "Author One" that are published by "Publisher Two":
+
+```python
+books_by_author_and_publisher = Book.objects.filter(author__name='Author One', publisher__name='Publisher Two')
+for book in books_by_author_and_publisher:
+    print(book.title)
+```
+
+3. **Filter Authors Who Have Books with a Specific Publisher**
+
+To find authors who have written books published by "Publisher One":
+
+```python
+authors_with_books_by_publisher = Author.objects.filter(books__publisher__name='Publisher One').distinct()
+for author in authors_with_books_by_publisher:
+    print(author.name)
+```
+
+4. **Count Books by Publisher**
+
+To count how many books each publisher has:
+
+```python
+from django.db.models import Count
+
+publishers_with_book_counts = Publisher.objects.annotate(book_count=Count('books'))
+for publisher in publishers_with_book_counts:
+    print(f'{publisher.name} has {publisher.book_count} books.')
+```
+
+5. **Filter Publishers with No Books**
+
+To find publishers that have not published any books:
+
+```python
+publishers_without_books = Publisher.objects.annotate(book_count=Count('books')).filter(book_count=0)
+for publisher in publishers_without_books:
+    print(publisher.name)
+```
+
+6. **Filter Books by Author's Name with Complex Conditions**
+
+You can use `Q` objects for more complex queries. For example, to find books by either "Author One" or books published by "Publisher Two":
+
+```python
+from django.db.models import Q
+
+books_by_author_or_publisher = Book.objects.filter(
+    Q(author__name='Author One') | Q(publisher__name='Publisher Two')
+)
+for book in books_by_author_or_publisher:
+    print(book.title)
+```
+
+### Summary
+
+Using Django ORM, you can effectively filter across different tables by leveraging foreign key relationships and utilizing the query capabilities provided by Django. By chaining filters and using annotations or `Q` objects, you can construct complex queries to retrieve the data you need.
