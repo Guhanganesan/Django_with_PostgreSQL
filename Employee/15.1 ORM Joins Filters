@@ -1,0 +1,95 @@
+Django's ORM (Object-Relational Mapping) makes it easy to perform complex queries, including joins and filters. Here’s a brief overview with examples:
+
+### Models Setup
+
+Assume we have two models: `Author` and `Book`. Each book is related to an author.
+
+```python
+from django.db import models
+
+class Author(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+class Book(models.Model):
+    title = models.CharField(max_length=100)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='books')
+
+    def __str__(self):
+        return self.title
+```
+
+### Creating Some Sample Data
+
+To illustrate the queries, let’s create some sample data.
+
+```python
+# Create authors
+author1 = Author.objects.create(name='Author One')
+author2 = Author.objects.create(name='Author Two')
+
+# Create books
+Book.objects.create(title='Book One', author=author1)
+Book.objects.create(title='Book Two', author=author1)
+Book.objects.create(title='Book Three', author=author2)
+```
+
+### Performing Queries with Joins and Filters
+
+1. **Simple Join: Fetching Books with Authors**
+
+To get all books with their authors, you can use the following query. This implicitly performs a join:
+
+```python
+books = Book.objects.select_related('author').all()
+for book in books:
+    print(f'{book.title} by {book.author.name}')
+```
+
+2. **Filtering Books by Author Name**
+
+If you want to filter books by a specific author’s name, you can do it like this:
+
+```python
+books_by_author_one = Book.objects.filter(author__name='Author One')
+for book in books_by_author_one:
+    print(book.title)
+```
+
+3. **Filtering with Multiple Conditions**
+
+You can filter based on multiple conditions. For example, to find books by "Author One" and whose title contains "One":
+
+```python
+filtered_books = Book.objects.filter(author__name='Author One', title__icontains='One')
+for book in filtered_books:
+    print(book.title)
+```
+
+4. **Using `annotate` for Aggregations**
+
+To count how many books each author has, you can use `annotate` with `Count`:
+
+```python
+from django.db.models import Count
+
+authors_with_book_counts = Author.objects.annotate(book_count=Count('books'))
+for author in authors_with_book_counts:
+    print(f'{author.name} has {author.book_count} books.')
+```
+
+5. **Chaining Filters**
+
+You can chain filters for more specific queries. For example, to find all authors who have written more than one book:
+
+```python
+authors_with_multiple_books = Author.objects.annotate(book_count=Count('books')).filter(book_count__gt=1)
+for author in authors_with_multiple_books:
+    print(author.name)
+```
+
+### Summary
+
+Django's ORM allows you to perform powerful queries with joins and filters effortlessly. The use of related names and Django’s query syntax provides a clean and efficient way to interact with your database. By chaining filters and using annotations, you can extract exactly the data you need.
