@@ -1,0 +1,70 @@
+Certainly! Let's say you have two tables: `authors` and `books`. Each author can write multiple books, and you want to get a count of books per author using an INNER JOIN along with a GROUP BY clause.
+
+### Table Structure
+
+**authors**
+| id | name        |
+|----|-------------|
+| 1  | Author A   |
+| 2  | Author B   |
+| 3  | Author C   |
+
+**books**
+| id | title         | author_id |
+|----|---------------|-----------|
+| 1  | Book 1       | 1         |
+| 2  | Book 2       | 1         |
+| 3  | Book 3       | 2         |
+| 4  | Book 4       | 3         |
+| 5  | Book 5       | 2         |
+
+### SQL Query
+
+To get a count of books for each author, you can use the following SQL query:
+
+```sql
+SELECT a.name, COUNT(b.id) AS book_count
+FROM authors a
+INNER JOIN books b ON a.id = b.author_id
+GROUP BY a.id, a.name;
+```
+
+### Explanation
+
+1. **INNER JOIN**: This joins the `authors` table with the `books` table based on the matching `author_id`.
+2. **COUNT(b.id)**: This counts the number of books for each author.
+3. **GROUP BY a.id, a.name**: This groups the results by author, allowing you to get the count of books per author.
+
+### Result
+
+The result of this query would look like this:
+
+| name      | book_count |
+|-----------|------------|
+| Author A  | 2          |
+| Author B  | 2          |
+| Author C  | 1          |
+
+### Using Django ORM
+
+If you're using Django, you can achieve the same result using the ORM like this:
+
+```python
+from django.db.models import Count
+from myapp.models import Author, Book
+
+result = Author.objects.annotate(book_count=Count('book')).values('name', 'book_count')
+
+for entry in result:
+    print(entry)
+```
+
+### Explanation of Django ORM
+
+- **annotate**: Adds an aggregate value (`book_count`) to each author object.
+- **Count('book')**: Assumes there's a related name from the `Book` model back to the `Author` model, typically done via a foreign key.
+- **values**: Gets only the specified fields.
+
+This will give you a similar output as the SQL query.
+
+Feel free to ask if you have more questions or need further examples!
