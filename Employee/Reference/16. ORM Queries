@@ -1,0 +1,245 @@
+Django's Object-Relational Mapping (ORM) provides a high-level abstraction for querying your database. This allows you to interact with your database using Python code instead of raw SQL queries. Here’s an in-depth look at how to perform various types of queries using Django ORM.
+
+### 1. **Basic Querying**
+
+#### **Model Methods**
+
+- **`all()`**: Retrieve all records.
+  
+  ```python
+  # Fetch all instances of the model
+  all_books = Book.objects.all()
+  ```
+
+- **`filter()`**: Retrieve records that match certain criteria.
+
+  ```python
+  # Fetch books with a specific title
+  books = Book.objects.filter(title='Django for Beginners')
+  ```
+
+- **`exclude()`**: Retrieve records that do not match certain criteria.
+
+  ```python
+  # Fetch all books except those with a specific title
+  books = Book.objects.exclude(title='Django for Beginners')
+  ```
+
+- **`get()`**: Retrieve a single record. Raises `DoesNotExist` if no records are found or `MultipleObjectsReturned` if more than one record matches.
+
+  ```python
+  # Fetch a single book by its ID
+  book = Book.objects.get(id=1)
+  ```
+
+- **`create()`**: Create and save a new record.
+
+  ```python
+  # Create a new book
+  book = Book.objects.create(title='Django for Professionals', author='William S. Vincent')
+  ```
+
+- **`update()`**: Update existing records.
+
+  ```python
+  # Update the title of a book
+  Book.objects.filter(id=1).update(title='Updated Title')
+  ```
+
+- **`delete()`**: Delete records.
+
+  ```python
+  # Delete a book by its ID
+  Book.objects.get(id=1).delete()
+  ```
+
+### 2. **Field Lookups**
+
+Field lookups are used in conjunction with `filter()` and `exclude()` to specify the criteria for querying.
+
+- **Exact Match:**
+
+  ```python
+  # Fetch books with an exact title
+  books = Book.objects.filter(title__exact='Django for Beginners')
+  ```
+
+- **Case-Insensitive Match:**
+
+  ```python
+  # Fetch books with a case-insensitive match
+  books = Book.objects.filter(title__iexact='django for beginners')
+  ```
+
+- **Partial Match:**
+
+  ```python
+  # Fetch books containing a specific substring
+  books = Book.objects.filter(title__contains='Django')
+  ```
+
+- **Starts with:**
+
+  ```python
+  # Fetch books whose titles start with a specific substring
+  books = Book.objects.filter(title__startswith='Django')
+  ```
+
+- **Ends with:**
+
+  ```python
+  # Fetch books whose titles end with a specific substring
+  books = Book.objects.filter(title__endswith='Beginners')
+  ```
+
+- **Range:**
+
+  ```python
+  # Fetch books published in a specific range of years
+  books = Book.objects.filter(published_year__range=(2010, 2020))
+  ```
+
+- **Date Lookups:**
+
+  ```python
+  # Fetch books published on a specific date
+  books = Book.objects.filter(published_date__date=datetime.date(2020, 5, 1))
+  ```
+
+- **Null Values:**
+
+  ```python
+  # Fetch books without a specified author
+  books = Book.objects.filter(author__isnull=True)
+  ```
+
+### 3. **Ordering and Limiting**
+
+- **`order_by()`**: Order the results by specified fields.
+
+  ```python
+  # Fetch books ordered by title
+  books = Book.objects.order_by('title')
+
+  # Fetch books ordered by title in descending order
+  books = Book.objects.order_by('-title')
+  ```
+
+- **`distinct()`**: Remove duplicate entries.
+
+  ```python
+  # Fetch distinct book titles
+  books = Book.objects.values('title').distinct()
+  ```
+
+- **`[:n]`**: Limit the number of results.
+
+  ```python
+  # Fetch the first 5 books
+  books = Book.objects.all()[:5]
+  ```
+
+### 4. **Aggregation**
+
+Aggregation functions operate on the queryset and return a dictionary of aggregated values.
+
+- **Count:**
+
+  ```python
+  from django.db.models import Count
+
+  # Count the number of books
+  book_count = Book.objects.count()
+
+  # Count books per author
+  author_counts = Book.objects.values('author').annotate(count=Count('author'))
+  ```
+
+- **Sum:**
+
+  ```python
+  from django.db.models import Sum
+
+  # Sum of a field
+  total_sales = Book.objects.aggregate(Sum('sales'))
+  ```
+
+- **Average:**
+
+  ```python
+  from django.db.models import Avg
+
+  # Average value of a field
+  average_rating = Book.objects.aggregate(Avg('rating'))
+  ```
+
+- **Min/Max:**
+
+  ```python
+  from django.db.models import Min, Max
+
+  # Minimum and maximum values of a field
+  min_price = Book.objects.aggregate(Min('price'))
+  max_price = Book.objects.aggregate(Max('price'))
+  ```
+
+### 5. **Complex Queries**
+
+- **Chaining Queries:**
+
+  ```python
+  # Fetch books by a specific author published after 2015
+  books = Book.objects.filter(author='William S. Vincent').filter(published_year__gt=2015)
+  ```
+
+- **Joins:**
+
+  Django ORM performs joins automatically when accessing related models. You can also manually perform joins.
+
+  ```python
+  # Fetch books with their authors
+  books = Book.objects.select_related('author').all()
+
+  # Fetch authors and their books
+  authors = Author.objects.prefetch_related('book_set').all()
+  ```
+
+- **Raw SQL Queries:**
+
+  ```python
+  # Execute a raw SQL query
+  from django.db import connection
+
+  with connection.cursor() as cursor:
+      cursor.execute("SELECT * FROM myapp_book WHERE title = %s", ['Django for Beginners'])
+      rows = cursor.fetchall()
+  ```
+
+### 6. **Pagination**
+
+Django provides built-in support for paginating querysets.
+
+- **Example:**
+
+  ```python
+  from django.core.paginator import Paginator
+
+  # Get all books
+  books = Book.objects.all()
+
+  # Paginate with 10 books per page
+  paginator = Paginator(books, 10)
+  page_number = 1
+  page = paginator.get_page(page_number)
+  ```
+
+### Summary
+
+- **Basic Querying**: Use `all()`, `filter()`, `exclude()`, `get()`, `create()`, `update()`, and `delete()`.
+- **Field Lookups**: Perform exact, case-insensitive, partial, and range searches.
+- **Ordering and Limiting**: Use `order_by()`, `distinct()`, and slicing to manage result sets.
+- **Aggregation**: Utilize functions like `count()`, `sum()`, `avg()`, `min()`, and `max()`.
+- **Complex Queries**: Chain queries, use joins, and execute raw SQL if needed.
+- **Pagination**: Use Django’s pagination tools to manage large datasets.
+
+Django ORM provides a powerful and flexible way to interact with your database, allowing you to perform a wide range of queries using Python code.

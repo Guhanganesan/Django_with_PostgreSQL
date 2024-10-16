@@ -1,0 +1,221 @@
+Django provides a rich set of built-in template tags and filters that you can use to create dynamic and data-driven HTML templates. These tags and filters are used within Django templates to perform operations, control template logic, and format data.
+
+### 1. **Built-in Template Tags**
+
+Template tags are used for various purposes, such as including other templates, controlling flow, and performing operations. Here’s a rundown of some commonly used built-in template tags:
+
+#### **1.1 `{% if %}` Tag**
+
+- **Description**: Used for conditional logic.
+- **Example**:
+  ```html
+  {% if user.is_authenticated %}
+      <p>Welcome, {{ user.username }}!</p>
+  {% else %}
+      <p>Please log in.</p>
+  {% endif %}
+  ```
+
+#### **1.2 `{% for %}` Tag**
+
+- **Description**: Used for iterating over a list or queryset.
+- **Example**:
+  ```html
+  <ul>
+      {% for item in item_list %}
+          <li>{{ item.name }}</li>
+      {% endfor %}
+  </ul>
+  ```
+
+#### **1.3 `{% include %}` Tag**
+
+- **Description**: Includes another template within the current template.
+- **Example**:
+  ```html
+  {% include 'partials/header.html' %}
+  ```
+
+#### **1.4 `{% block %}` Tag**
+
+- **Description**: Defines a block of content that child templates can override.
+- **Example**:
+  ```html
+  {% block content %}
+      <p>This is the default content.</p>
+  {% endblock %}
+  ```
+
+#### **1.5 `{% extends %}` Tag**
+
+- **Description**: Indicates that a template inherits from a base template.
+- **Example**:
+  ```html
+  {% extends 'base.html' %}
+  ```
+
+#### **1.6 `{% with %}` Tag**
+
+- **Description**: Assigns a value to a variable within a template.
+- **Example**:
+  ```html
+  {% with total=items|length %}
+      <p>Total items: {{ total }}</p>
+  {% endwith %}
+  ```
+
+#### **1.7 `{% url %}` Tag**
+
+- **Description**: Generates a URL for a given view name.
+- **Example**:
+  ```html
+  <a href="{% url 'view_name' %}">Link</a>
+  ```
+
+#### **1.8 `{% csrf_token %}` Tag**
+
+- **Description**: Inserts a CSRF token for security in POST forms.
+- **Example**:
+  ```html
+  <form method="post">
+      {% csrf_token %}
+      <!-- Form fields here -->
+  </form>
+  ```
+
+#### **1.9 `{% cycle %}` Tag**
+
+- **Description**: Cycles through a list of values.
+- **Example**:
+  ```html
+  {% for item in items %}
+      <tr class="{% cycle 'odd' 'even' %}">
+          <td>{{ item.name }}</td>
+      </tr>
+  {% endfor %}
+  ```
+
+#### **1.10 `{% now %}` Tag**
+
+- **Description**: Outputs the current date and time.
+- **Example**:
+  ```html
+  {% now "Y-m-d H:i" %}
+  ```
+
+### 2. **Built-in Template Filters**
+
+Template filters are used to modify the display of variables. They are applied to variables using the pipe (`|`) syntax.
+
+#### **2.1 `{{ value|length }}` Filter**
+
+- **Description**: Returns the length of a value.
+- **Example**:
+  ```html
+  <p>Number of items: {{ items|length }}</p>
+  ```
+
+#### **2.2 `{{ value|lower }}` Filter**
+
+- **Description**: Converts a string to lowercase.
+- **Example**:
+  ```html
+  <p>{{ name|lower }}</p>
+  ```
+
+#### **2.3 `{{ value|upper }}` Filter**
+
+- **Description**: Converts a string to uppercase.
+- **Example**:
+  ```html
+  <p>{{ name|upper }}</p>
+  ```
+
+#### **2.4 `{{ value|title }}` Filter**
+
+- **Description**: Capitalizes the first letter of each word in a string.
+- **Example**:
+  ```html
+  <p>{{ name|title }}</p>
+  ```
+
+#### **2.5 `{{ value|default:"default_value" }}` Filter**
+
+- **Description**: Provides a default value if the variable is empty.
+- **Example**:
+  ```html
+  <p>{{ username|default:"Anonymous" }}</p>
+  ```
+
+#### **2.6 `{{ value|date:"Y-m-d" }}` Filter**
+
+- **Description**: Formats a date.
+- **Example**:
+  ```html
+  <p>Today’s date: {{ today|date:"Y-m-d" }}</p>
+  ```
+
+#### **2.7 `{{ value|number_format }}` Filter**
+
+- **Description**: Formats a number with thousands separators.
+- **Example**:
+  ```html
+  <p>{{ price|number_format }}</p>
+  ```
+
+#### **2.8 `{{ value|safe }}` Filter**
+
+- **Description**: Marks a string as safe for HTML output.
+- **Example**:
+  ```html
+  <p>{{ html_content|safe }}</p>
+  ```
+
+#### **2.9 `{{ value|slugify }}` Filter**
+
+- **Description**: Converts a string into a slug.
+- **Example**:
+  ```html
+  <p>{{ title|slugify }}</p>
+  ```
+
+#### **2.10 `{{ value|escape }}` Filter**
+
+- **Description**: Escapes HTML special characters.
+- **Example**:
+  ```html
+  <p>{{ unsafe_content|escape }}</p>
+  ```
+
+### 3. **Using Tags and Filters**
+
+Here’s an example template using various tags and filters:
+
+```html
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ title|title }}</h1>
+    <p>Current date: {% now "Y-m-d" %}</p>
+
+    {% if items %}
+        <ul>
+            {% for item in items %}
+                <li>{{ item.name|upper }} - {{ item.date|date:"d M Y" }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No items available.</p>
+    {% endif %}
+
+    <form method="post" action="{% url 'submit' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+{% endblock %}
+```
+
+### Summary
+
+Django’s built-in template tags and filters are powerful tools for dynamically generating HTML content. Tags control the flow and structure of templates, while filters format and modify variable content. Leveraging these features effectively allows you to build dynamic, data-driven web applications with ease. For more details, you can refer to the [Django template documentation](https://docs.djangoproject.com/en/stable/topics/templates/).
