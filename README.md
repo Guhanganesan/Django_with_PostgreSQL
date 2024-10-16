@@ -9,11 +9,24 @@
 7. Create a models for Employee
 8. Register models in admin.py
 
-
 # Migrations
 
 1. python manage.py makemigrations
 2. python manage.py migrate
+
+# Super User
+
+1. python manage.py createsuperuser
+
+Username (leave blank to use 'macpro'): guhan
+Email address: guhang990@gmail.com
+Password:
+Password (again):
+This password is too short. It must contain at least 8 characters.
+This password is too common.
+This password is entirely numeric.
+Bypass password validation and create user anyway? [y/N]: y
+Superuser created successfully.
 
 # Run App
 
@@ -89,4 +102,3 @@ mydata = Member.objects.filter(firstname='Emil').values() | Member.objects.filte
 2. (DESC) mydata = Member.objects.all().order_by('-firstname').values() => SELECT * FROM members ORDER BY firstname DESC;
 3. mydata = Member.objects.all().order_by('lastname', '-id').values() => SELECT * FROM members ORDER BY lastname ASC, id DESC;
 4. Member.objects.all().order_by('first_name','-mobile') => multiple
-5.    
