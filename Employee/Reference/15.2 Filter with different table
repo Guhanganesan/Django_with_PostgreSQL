@@ -101,7 +101,8 @@ for publisher in publishers_without_books:
 
 6. **Filter Books by Author's Name with Complex Conditions**
 
-You can use `Q` objects for more complex queries. For example, to find books by either "Author One" or books published by "Publisher Two":
+You can use `Q` objects for more complex queries. For example, to find books by either 
+"Author One" or books published by "Publisher Two":
 
 ```python
 from django.db.models import Q

@@ -1,0 +1,111 @@
+Mac Pro@DESKTOP-MVQVUTK MINGW64 /d/PP-2023/Django_PSQL/Django_with_PostgreSQL/Employee (master)
+$ python manage.py shell
+Python 3.11.0 (main, Oct 24 2022, 18:26:48) [MSC v.1933 64 bit (AMD64)]
+Type 'copyright', 'credits' or 'license' for more information
+IPython 8.10.0 -- An enhanced Interactive Python. Type '?' for help.
+
+In [1]: from tutorial.models import Author
+
+In [3]: a1 = Author.objects.create(name="Anbu")
+
+In [4]: Author.objects.all()
+
+Out[4]: <QuerySet [<Author: Guhan>, <Author: Anbu>]>
+
+In [6]: from tutorial.models import Author, Publisher, Book
+
+In [7]: b1 = Publisher.objects.create(name="KRS")
+
+In [8]: Publisher.objects.all()
+Out[8]: <QuerySet [<Publisher: SKU>, <Publisher: KRS>]>
+
+In [9]: Book.objects.create(title='cse',author='Anbu',publisher='KRS')
+---------------------------------------------------------------------------
+ValueError                                Traceback (most recent call last)
+Cell In[9], line 1
+----> 1 Book.objects.create(title='cse',author='Anbu',publisher='KRS')
+
+----------------------------------------------------------------------------
+
+In [10]: Book.objects.create(title='cse',author=a1,publisher=b1)
+Out[10]: <Book: cse>
+
+In [11]: Book.objects.all()
+Out[11]: <QuerySet [<Book: TNPSC>, <Book: cse>]>
+
+In [12]: for item in Book.objects.all():
+    ...:     print(item)
+    ...:
+TNPSC
+cse
+
+In [13]: for item in Book.objects.all().values():
+    ...:     print(item)
+    ...:
+{'id': 1, 'title': 'TNPSC', 'author_id': 1, 'publisher_id': 1}
+{'id': 2, 'title': 'cse', 'author_id': 2, 'publisher_id': 2}
+
+-------------------------------------------------------------------------------
+
+
+In [10]: Book.objects.create(title='cse',author=a1,publisher=b1)
+Out[10]: <Book: cse>
+
+In [11]: Book.objects.all()
+Out[11]: <QuerySet [<Book: TNPSC>, <Book: cse>]>
+
+In [12]: for item in Book.objects.all():
+    ...:     print(item)
+    ...:
+TNPSC
+cse
+
+In [13]: for item in Book.objects.all().values():
+    ...:     print(item)
+    ...:
+{'id': 1, 'title': 'TNPSC', 'author_id': 1, 'publisher_id': 1}
+{'id': 2, 'title': 'cse', 'author_id': 2, 'publisher_id': 2}
+
+In [14]: p=Book.objects.filter(author__name='Guhan').values()
+
+In [15]: print(p)
+<QuerySet [{'id': 1, 'title': 'TNPSC', 'author_id': 1, 'publisher_id': 1}]>
+
+In [16]: q=Author.objects.filter(book__publisher__name='Guhan').values()
+---------------------------------------------------------------------------
+
+In [17]: q=Author.objects.filter(books__publisher__name='Guhan').values()
+
+In [18]: print(q)
+<QuerySet []> => Give publisher name not author name
+
+In [19]: q=Author.objects.filter(books__publisher__name='SKU').values()
+
+In [20]: print(q)
+<QuerySet [{'id': 1, 'name': 'Guhan'}]>
+
+---------------------------------------------------------------------------
+
+In [21]: from django.db.models import Q
+
+In [22]: R = Book.objects.filter(Q(author__name='Guhan') | Q(publisher__name='KRS'))
+
+In [23]: print(R)
+<QuerySet [<Book: TNPSC>, <Book: cse>]>
+
+In [24]: R = Book.objects.filter(Q(author__name='Guhan') | Q(publisher__name='KRS')).values()
+
+In [25]: print(R)
+<QuerySet [{'id': 1, 'title': 'TNPSC', 'author_id': 1, 'publisher_id': 1}, {'id': 2, 'title': 'cse', 'author_id': 2, 'publ
+isher_id': 2}]>
+
+In [26]: R = Book.objects.filter(Q(author__name='Guhan') | Q(publisher__name='KRS')).values('name')
+FieldError: Cannot resolve keyword 'name' into field. Choices are: author, author_id, id, publisher, publisher_id, title
+
+In [27]: R = Book.objects.filter(Q(author__name='Guhan') | Q(publisher__name='KRS')).values('title')
+
+In [28]: print(R)
+<QuerySet [{'title': 'TNPSC'}, {'title': 'cse'}]>
+
+------------------------------------------------------------------------------
+
