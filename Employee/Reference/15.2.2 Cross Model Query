@@ -1,0 +1,104 @@
+Absolutely! Cross-model queries allow you to retrieve data that involves multiple models and their relationships. Given your models (`Author`, `Publisher`, and `Book`), here are some examples of how to perform cross-model queries using the Django shell.
+
+### Step 1: Open the Django Shell
+If you haven’t already, open your Django shell:
+```bash
+python manage.py shell
+```
+
+### Step 2: Import Your Models
+Import the necessary models:
+```python
+from myapp.models import Author, Publisher, Book
+```
+
+### Example Queries
+
+#### 1. Get All Books by a Specific Author
+Suppose you want to find all books written by a specific author (e.g., J.K. Rowling):
+```python
+# Fetch the author
+author = Author.objects.get(name='J.K. Rowling')
+
+# Get all books by this author
+books_by_author = author.books.all()  # Using related_name from ForeignKey
+print(books_by_author)
+```
+
+#### 2. Get the Publisher of a Specific Book
+To find the publisher of a specific book:
+```python
+# Fetch the book
+book = Book.objects.get(title='Harry Potter and the Philosopher\'s Stone')
+
+# Get the publisher of this book
+publisher_of_book = book.publisher
+print(publisher_of_book)
+```
+
+#### 3. List All Books with Their Authors and Publishers
+You can loop through all books and print their details, including author and publisher:
+```python
+# Get all books
+all_books = Book.objects.all()
+
+for book in all_books:
+    print(f'Title: {book.title}, Author: {book.author.name}, Publisher: {book.publisher.name}')
+```
+
+#### 4. Find All Books by a Publisher
+To find all books published by a specific publisher:
+```python
+# Fetch the publisher
+publisher = Publisher.objects.get(name='Bloomsbury')
+
+# Get all books published by this publisher
+books_by_publisher = publisher.books.all()  # Using related_name from ForeignKey
+print(books_by_publisher)
+```
+
+### Step 3: Exit the Django Shell
+Once you've finished your queries, you can exit the shell:
+```python
+exit()
+```
+
+### Conclusion
+These examples demonstrate how to perform cross-model queries in Django. 
+You can use the relationships defined in your models to access related data efficiently. 
+If you have specific queries in mind or need further assistance, feel free to ask!
+
+------------------------------------------------------------------------------
+In [2]: from tutorial.models import Author, Publisher, Book
+
+In [3]: author = Author.objects.get(name='Guhan')
+
+In [4]: books_by_author = author.books.all()
+
+In [5]: print(books_by_author)
+<QuerySet [<Book: TNPSC>]>
+
+In [7]: book = Book.objects.get(title='TNPSC')
+
+In [8]: publisher_of_book = book.publisher
+
+In [9]: print(publisher_of_book)
+SKU
+
+In [10]: all_books = Book.objects.all()
+
+In [11]: for book in all_books:
+    ...:     print(f'Title: {book.title}, Author: {book.author.name}, Publisher: {book.publisher.name}')
+    ...:
+Title: TNPSC, Author: Guhan, Publisher: SKU
+Title: cse, Author: Anbu, Publisher: KRS
+
+In [12]: publisher = Publisher.objects.get(name='KRS')
+
+In [13]: books_by_publisher = publisher.books.all()
+
+In [14]: print(books_by_publisher)
+<QuerySet [<Book: cse>]>
+---------------------------------------------------------------------------------------------------
+
+

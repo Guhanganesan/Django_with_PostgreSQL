@@ -20,3 +20,11 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
+
+class Profile(models.Model):
+    author = models.OneToOneField(Author, on_delete=models.CASCADE)
+    biography = models.TextField()
+
+    def __str__(self):
+        return f'Profile of {self.author.name}'
+
