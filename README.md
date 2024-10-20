@@ -32,6 +32,10 @@ Superuser created successfully.
 
 1. python manage.py runserver
 
+# Django Shell
+
+1. python manage.py shell
+
 # Git Ignore 
 
 1. touch .gitignore
@@ -42,6 +46,10 @@ Superuser created successfully.
 1. pip install psycopg2 - OR
 2. pip install psycopg2-binary -OR
 3. python -m pip install Psycopg2
+
+# Django Google SSO
+
+https://pypi.org/project/django-google-sso/
 
 # References
 

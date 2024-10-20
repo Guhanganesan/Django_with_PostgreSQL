@@ -8,6 +8,12 @@ import pandas as pd
 
 # Create Employee
 
+
+def index(request):
+    
+    return render(request, 'index.html')
+
+
 def insert_emp(request):
     if request.method == "POST":
         EmpId = request.POST['EmpId']
