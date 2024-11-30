@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+</head>
+<body>
+    <h2>Logged Out!</h2>
+    {% block content %}
+        <h2>You have been logged out</h2>
+        <p><a href="{% url 'login' %}">Login again</a></p>
+    {% endblock %}
+</body>
+</html>

@@ -9,6 +9,11 @@
 7. Create a models for Employee
 8. Register models in admin.py
 
+# Requirements
+
+1. pip freeze > requirements.txt
+2. pip install -r requirements.txt
+
 # Migrations
 
 1. python manage.py makemigrations
@@ -46,6 +51,13 @@ Superuser created successfully.
 1. pip install psycopg2 - OR
 2. pip install psycopg2-binary -OR
 3. python -m pip install Psycopg2
+
+# Modules 
+
+1. pip install schedule
+2. pip install django-crontab
+3. pip install django_google_sso
+4. pip install pandas
 
 # Django Google SSO
 

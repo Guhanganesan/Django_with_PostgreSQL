@@ -40,6 +40,12 @@ INSTALLED_APPS = [
     'myapp',
     'tutorial',
     "django_google_sso",  # Add django_google_sso
+    'accounts',
+    'django_crontab'
+]
+
+CRONJOBS = [
+('*/1 * * * *', 'myapp.task.test')
 ]
 
 GOOGLE_SSO_CLIENT_ID = "674781102356-4p8bk0ed6h3pl5v30skmlo13sodeaemm.apps.googleusercontent.com"
@@ -47,6 +53,13 @@ GOOGLE_SSO_PROJECT_ID = "instant-keel-439103-m2"
 GOOGLE_SSO_CLIENT_SECRET = "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"
 
 GOOGLE_SSO_ALLOWABLE_DOMAINS = ["gmail.com"]
+
+# Authentican -> Register, Login and Logout
+LOGIN_REDIRECT_URL = "/"    # Or a named URL like 'home'
+LOGOUT_REDIRECT_URL = '/login/'  # Redirect to login after logging out
+SESSION_COOKIE_AGE = 3600  # 1 hour (in seconds)
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Session expires when browser is closed
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -63,7 +76,7 @@ ROOT_URLCONF = 'Employee.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['Templates'],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

@@ -20,5 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('myapp.urls')),
     path('', include('tutorial.urls')),
-    path("google_sso/", include("django_google_sso.urls", namespace="django_google_sso"))
+    path("google_sso/", include("django_google_sso.urls", namespace="django_google_sso")),
+    path("accounts/", include("django.contrib.auth.urls")),  # new
 ]
