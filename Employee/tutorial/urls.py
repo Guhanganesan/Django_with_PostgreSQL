@@ -7,5 +7,6 @@ urlpatterns = [
     path("/my_template_view", views.my_template_view, name='my_template_view'),
     path("/my_redirect_view", views.my_redirect_view, name='my_redirect_view'),
     path("/stream_view", views.stream_view, name='stream_view'),
-    path("/custom_header_view",views.custom_header_view,name='custom_header_view')
+    path("/custom_header_view",views.custom_header_view,name='custom_header_view'),
+    path('/hello', views.HelloView.as_view(), name ='hello')
 ]

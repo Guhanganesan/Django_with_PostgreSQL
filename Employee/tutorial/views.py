@@ -4,6 +4,10 @@ from django.http import JsonResponse
 from django.http import StreamingHttpResponse
 from django.shortcuts import redirect
 
+from rest_framework.views import APIView 
+from rest_framework.response import Response 
+from rest_framework.permissions import IsAuthenticated
+
 # Create your views here.
 
 def http_response(request):
@@ -31,3 +35,9 @@ def custom_header_view(request):
     response = HttpResponse("Custom Header Response")
     response['Custom-Header'] = 'MyValue'
     return response
+
+class HelloView(APIView): 
+    permission_classes = (IsAuthenticated, ) 
+    def get(self, request): 
+        content = {'message': 'Hello, Guhan Ganesan'} 
+        return Response(content) 

@@ -90,6 +90,15 @@ https://pypi.org/project/django-google-sso/
 
    ![alt text](image.png)
 
+# JWT Token Authentication
+
+1. pip install djangorestframework_simplejwt
+
+![alt text](image-2.png)
+
+![alt text](image-3.png)
+
+
 # Basic Queries
 
 1. Member.objects.all()

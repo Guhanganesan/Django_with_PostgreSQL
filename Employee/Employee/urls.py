@@ -17,7 +17,9 @@ from django.contrib import admin
 from django.urls import path, include
 from .api.router import router
 from rest_framework.authtoken import views as auth_views
+from rest_framework_simplejwt import views as jwt_views
 from .views import verify_token
+from tutorial.views import HelloView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,5 +30,12 @@ urlpatterns = [
     ######################## Token ###########################
     path('api/', include(router.urls)),  # Includes /api/users/ endpoint
     path('api-token-auth/', auth_views.obtain_auth_token, name='api-token-auth'),  # Token generation endpoint
-    path('verify-token', verify_token, name='verify_token')
+    path('verify-token', verify_token, name='verify_token'),
+    ######################## JWT Token #######################
+    path('api/token/', 
+         jwt_views.TokenObtainPairView.as_view(), 
+         name ='token_obtain_pair'), 
+    path('api/token/refresh/',
+         jwt_views.TokenRefreshView.as_view(), 
+         name ='token_refresh')
 ]
