@@ -67,6 +67,28 @@ https://pypi.org/project/django-google-sso/
 
 1. Link: https://stackoverflow.com/questions/33215558/unable-to-install-psycopg2-on-windows
 2. https://pythonguides.com/django-crud-example-with-postgresql/
+3. https://www.geeksforgeeks.org/implement-token-authentication-using-django-rest-framework/
+
+# Token Authentication
+
+1. pip install --upgrade django-crispy-forms
+2. pip install djangorestframework
+3. pip install httpie
+4. create folder api
+5. Test URL: http://localhost:8000/api-token-auth/ <=>
+   Body: JSON => {
+    "username":"guhan",
+    "password":1234
+}
+![alt text](image-1.png)
+
+6. URL = http://127.0.0.1:8000/api/users/ 
+   Method = GET
+   Header => Authorization: Token abcdef1234567890
+   Key = Authorization 
+   Value = Token abcdef1234567890
+
+   ![alt text](image.png)
 
 # Basic Queries
 

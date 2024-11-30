@@ -15,6 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from .api.router import router
+from rest_framework.authtoken import views as auth_views
+from .views import verify_token
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -22,4 +25,8 @@ urlpatterns = [
     path('tutorial', include('tutorial.urls')),
     path("google_sso/", include("django_google_sso.urls", namespace="django_google_sso")),
     path("accounts/", include("django.contrib.auth.urls")),  # new
+    ######################## Token ###########################
+    path('api/', include(router.urls)),  # Includes /api/users/ endpoint
+    path('api-token-auth/', auth_views.obtain_auth_token, name='api-token-auth'),  # Token generation endpoint
+    path('verify-token', verify_token, name='verify_token')
 ]
